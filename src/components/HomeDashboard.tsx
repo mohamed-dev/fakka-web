@@ -30,7 +30,7 @@ export default function HomeDashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-1">
+        <div className="flex flex-col gap-3 lg:col-span-1">
           <BalanceJar
             balance={jar.balance}
             target={jar.target}
@@ -38,6 +38,15 @@ export default function HomeDashboard() {
             icon={destination.icon}
             note={jar.note}
           />
+          {active === "charity" && (
+            <Link
+              href="/charity"
+              className="flex items-center justify-center gap-2 rounded-xl2 bg-card px-4 py-3 text-sm font-semibold text-primary-light shadow-card transition-colors hover:bg-background"
+            >
+              شاهد أثرك
+              <span>‹</span>
+            </Link>
+          )}
         </div>
 
         <div className="flex flex-col gap-6 lg:col-span-2">

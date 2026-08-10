@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/transactions", label: "الحركات" },
   { href: "/zakat", label: "الزكاة" },
   { href: "/goal", label: "أهداف الادخار" },
+  { href: "/charity", label: "الأثر الخيري" },
   { href: "/settings", label: "الإعدادات" },
 ];
 

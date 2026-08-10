@@ -1,4 +1,4 @@
-import { Transaction, Subscription, SavingsGoal, calcRoundUp } from "./types";
+import { Transaction, Subscription, SavingsGoal, CharityCause, CharityCauseId, ImpactUnit, calcRoundUp } from "./types";
 
 // raw transaction seed: merchant, category, date, amount
 const RAW: Array<[string, Transaction["category"], string, number, string, string]> = [
@@ -139,7 +139,62 @@ export const ZAKAT_STATE = {
 export const DESTINATION_BALANCES: Record<"zakat" | "goal" | "charity", { balance: number; target: number; note: string }> = {
   zakat: { balance: 342.75, target: 617.01, note: "نحو استحقاق الزكاة القادم" },
   goal: { balance: 1240.0, target: 4500.0, note: "نحو هدف: جوال جديد" },
-  charity: { balance: 428.9, target: 1000.0, note: "صدقة جارية هذا الشهر" },
+  charity: { balance: 68.5, target: 1000.0, note: "صدقة جارية هذا الشهر" },
+};
+
+// ---- Charity impact (charity destination) ----
+export const CHARITY_CAUSES: CharityCause[] = [
+  {
+    id: "orphans",
+    title: "جمعية رعاية الأيتام",
+    description: "كفالة ورعاية الأيتام وتوفير حياة كريمة لهم",
+    icon: "👦",
+  },
+  {
+    id: "water",
+    title: "جمعية سقيا الماء",
+    description: "توفير مياه شرب نظيفة للمحتاجين في المناطق الأكثر فقراً",
+    icon: "💧",
+  },
+  {
+    id: "education",
+    title: "جمعية تعليم",
+    description: "دعم التعليم وتوفير الكتب والأدوات للطلاب المحتاجين",
+    icon: "🎓",
+  },
+  {
+    id: "mosques",
+    title: "جمعية عمارة المساجد",
+    description: "بناء وترميم المساجد في المناطق النائية",
+    icon: "🕌",
+  },
+];
+
+export const IMPACT_UNITS: Record<CharityCauseId, ImpactUnit[]> = {
+  orphans: [
+    { cost: 5, unit: "وجبة ليتيم", emoji: "🍽️" },
+    { cost: 15, unit: "يوم كفالة يتيم", emoji: "👦" },
+    { cost: 50, unit: "حقيبة مدرسية ليتيم", emoji: "🎒" },
+    { cost: 150, unit: "شهر كفالة يتيم", emoji: "🤲" },
+  ],
+  water: [
+    { cost: 4.5, unit: "عبوة ماء نظيف", emoji: "💧" },
+    { cost: 15, unit: "يوم ماء لعائلة", emoji: "🚰" },
+    { cost: 45, unit: "شهر ماء لأسرة", emoji: "💦" },
+    { cost: 150, unit: "مساهمة في حفر بئر", emoji: "⛏️" },
+  ],
+  education: [
+    { cost: 5, unit: "قلم وكراسة", emoji: "✏️" },
+    { cost: 12, unit: "مصحف كريم", emoji: "📖" },
+    { cost: 35, unit: "حقيبة مدرسية", emoji: "🎒" },
+    { cost: 120, unit: "شهر تعليم لطالب", emoji: "🎓" },
+  ],
+  mosques: [
+    { cost: 5, unit: "لبنة في بناء مسجد", emoji: "🧱" },
+    { cost: 20, unit: "سجادة صلاة", emoji: "🕌" },
+    { cost: 50, unit: "مصحف للمسجد", emoji: "📖" },
+    { cost: 150, unit: "مساهمة في بناء مسجد", emoji: "🏗️" },
+  ],
 };
 
 // ---- Bank connection mock state ----

@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: "/transactions", label: "الحركات", icon: ListIcon },
   { href: "/zakat", label: "الزكاة", icon: MosqueIcon },
   { href: "/goal", label: "أهداف الادخار", icon: TargetIcon },
+  { href: "/charity", label: "الأثر الخيري", icon: HeartIcon },
   { href: "/settings", label: "الإعدادات", icon: SettingsIcon },
 ];
 
@@ -90,6 +91,14 @@ function TargetIcon({ active }: { active: boolean }) {
       <circle cx="12" cy="12" r="9" />
       <circle cx="12" cy="12" r="5" />
       <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function HeartIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 20.5s-7.5-4.6-10-9.3C.6 8 2 4.5 5.4 3.7c2-.5 4 .4 5 2.1a1 1 0 0 0 1.2 0c1-1.7 3-2.6 5-2.1C20 4.5 21.4 8 20 11.2c-2.5 4.7-8 9.3-8 9.3Z" />
     </svg>
   );
 }

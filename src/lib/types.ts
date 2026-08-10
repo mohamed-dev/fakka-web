@@ -44,6 +44,21 @@ export interface SavingsGoal {
   color: string;
 }
 
+export type CharityCauseId = "orphans" | "water" | "education" | "mosques";
+
+export interface CharityCause {
+  id: CharityCauseId;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface ImpactUnit {
+  cost: number;
+  unit: string;
+  emoji: string;
+}
+
 export const DESTINATIONS: Destination[] = [
   { id: "zakat", label: "زكاة", icon: "🕌" },
   { id: "goal", label: "هدف ادخار", icon: "🎯" },
