@@ -1,26 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { DESTINATIONS, DestinationType, formatSAR } from "@/lib/types";
+import Link from "next/link";
+import { formatSAR } from "@/lib/types";
 import { DESTINATION_BALANCES, TRANSACTIONS, weeklyRoundUp, monthlyRoundUp } from "@/lib/mock-data";
-import DestinationTabs from "./DestinationTabs";
+import DestinationTabs, { HOME_TABS, HomeTabId } from "./DestinationTabs";
 import BalanceJar from "./BalanceJar";
 import StatCard from "./StatCard";
 import SubscriptionCard from "./SubscriptionCard";
 import TransactionRow from "./TransactionRow";
 import { ChevronIcon } from "./icons";
-import Link from "next/link";
 
-const QUICK_LINKS: Partial<Record<DestinationType, { href: string; label: string }>> = {
-  charity: { href: "/impact", label: "شاهد أثرك" },
-  goal: { href: "/goal", label: "تفاصيل الهدف" },
-};
+const TOTAL_BALANCE = DESTINATION_BALANCES.zakat.balance + DESTINATION_BALANCES.goal.balance;
+const TOTAL_TARGET = DESTINATION_BALANCES.zakat.target + DESTINATION_BALANCES.goal.target;
 
 export default function HomeDashboard() {
-  const [active, setActive] = useState<DestinationType>("zakat");
-  const destination = DESTINATIONS.find((d) => d.id === active)!;
-  const jar = DESTINATION_BALANCES[active];
-  const quickLink = QUICK_LINKS[active];
+  const [active, setActive] = useState<HomeTabId>("total");
+  const activeTab = HOME_TABS.find((t) => t.id === active)!;
 
   const recent = TRANSACTIONS.slice(0, 6);
   const weekly = weeklyRoundUp();
@@ -38,21 +34,52 @@ export default function HomeDashboard() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-3 lg:col-span-1">
-          <BalanceJar
-            balance={jar.balance}
-            target={jar.target}
-            label={destination.label}
-            icon={destination.icon}
-            note={jar.note}
-          />
-          {quickLink && (
-            <Link
-              href={quickLink.href}
-              className="flex items-center justify-center gap-1.5 rounded-2xl bg-card px-4 py-3.5 text-sm font-bold text-primary-light shadow-card transition-all duration-200 active:scale-[0.98] hover:shadow-soft"
-            >
-              {quickLink.label}
-              <ChevronIcon />
-            </Link>
+          {active === "transactions" ? (
+            <div className="flex flex-col rounded-3xl bg-card p-6 shadow-soft">
+              <div className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-muted">
+                <span>{activeTab.icon}</span> آخر حركاتك
+              </div>
+              <div className="divide-y divide-black/5">
+                {recent.slice(0, 5).map((t) => (
+                  <TransactionRow key={t.id} txn={t} />
+                ))}
+              </div>
+              <Link
+                href="/transactions"
+                className="mt-3 text-center text-xs font-semibold text-primary-light hover:underline"
+              >
+                عرض كل الحركات
+              </Link>
+            </div>
+          ) : active === "total" ? (
+            <BalanceJar
+              balance={TOTAL_BALANCE}
+              target={TOTAL_TARGET}
+              label={activeTab.label}
+              icon={activeTab.icon}
+              caption="إجمالي فكتك من كل الوجهات"
+              note="مجموع ما جمعته للزكاة وهدف الادخار"
+            />
+          ) : (
+            <>
+              <BalanceJar
+                balance={DESTINATION_BALANCES[active].balance}
+                target={DESTINATION_BALANCES[active].target}
+                label={activeTab.label}
+                icon={activeTab.icon}
+                caption={active === "goal" ? "رصيدك في هدف الادخار" : undefined}
+                note={DESTINATION_BALANCES[active].note}
+              />
+              {active === "goal" && (
+                <Link
+                  href="/goal"
+                  className="flex items-center justify-center gap-1.5 rounded-2xl bg-card px-4 py-3.5 text-sm font-bold text-primary-light shadow-card transition-all duration-200 active:scale-[0.98] hover:shadow-soft"
+                >
+                  تفاصيل الهدف
+                  <ChevronIcon />
+                </Link>
+              )}
+            </>
           )}
         </div>
 

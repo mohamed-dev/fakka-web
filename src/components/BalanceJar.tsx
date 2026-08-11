@@ -15,12 +15,14 @@ export default function BalanceJar({
   label,
   icon,
   note,
+  caption,
 }: {
   balance: number;
   target: number;
   label: string;
   icon: string;
   note: string;
+  caption?: string;
 }) {
   const [mounted, setMounted] = useState(false);
 
@@ -41,7 +43,7 @@ export default function BalanceJar({
       />
 
       <div className="relative mb-1 flex items-center gap-1.5 text-sm font-semibold text-muted">
-        <span>{icon}</span> رصيدك في {label}
+        <span>{icon}</span> {caption ?? `رصيدك في ${label}`}
       </div>
 
       <div className="relative my-3 h-64 w-56">
