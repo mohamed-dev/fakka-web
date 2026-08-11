@@ -12,7 +12,7 @@ import { ChevronIcon } from "./icons";
 import Link from "next/link";
 
 const QUICK_LINKS: Partial<Record<DestinationType, { href: string; label: string }>> = {
-  charity: { href: "/charities", label: "شاهد أثرك" },
+  charity: { href: "/impact", label: "شاهد أثرك" },
   goal: { href: "/goal", label: "تفاصيل الهدف" },
 };
 

@@ -62,6 +62,8 @@ export interface ImpactUnit {
   cost: number;
   unit: string;
   emoji: string;
+  // action sentence template with a {count} placeholder, e.g. "أطعمت {count} يتيمًا"
+  sentence: string;
 }
 
 export const DESTINATIONS: Destination[] = [

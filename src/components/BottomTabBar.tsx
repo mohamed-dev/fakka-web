@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, ListIcon, MosqueIcon, HeartIcon } from "./icons";
+import { HomeIcon, ListIcon, MosqueIcon, HeartIcon, UsersIcon } from "./icons";
 
 // DOM order matters for RTL flex layout: the first item renders at the
 // screen's right edge, the last at the left edge. This order yields the
-// left-to-right screen sequence: الزكاة، أثرك، المعاملات، الرئيسية —
-// placing "أثرك" in the visual middle of the row.
+// left-to-right screen sequence: الزكاة، الجمعيات، أثرك، المعاملات، الرئيسية.
+// "الجمعيات" (/charities, the cause list) and "أثرك" (/impact, the personal
+// impact dashboard) are separate features and must not share a route.
 const TABS = [
   { href: "/", label: "الرئيسية", icon: HomeIcon },
   { href: "/transactions", label: "المعاملات", icon: ListIcon },
-  { href: "/charities", label: "أثرك", icon: HeartIcon },
+  { href: "/impact", label: "أثرك", icon: HeartIcon },
+  { href: "/charities", label: "الجمعيات", icon: UsersIcon },
   { href: "/zakat", label: "الزكاة", icon: MosqueIcon },
 ];
 

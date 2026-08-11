@@ -182,30 +182,83 @@ export const CHARITY_CAUSES: CharityCause[] = [
 
 export const IMPACT_UNITS: Record<CharityCauseId, ImpactUnit[]> = {
   orphans: [
-    { cost: 5, unit: "وجبة ليتيم", emoji: "🍽️" },
-    { cost: 15, unit: "يوم كفالة يتيم", emoji: "👦" },
-    { cost: 50, unit: "حقيبة مدرسية ليتيم", emoji: "🎒" },
-    { cost: 150, unit: "شهر كفالة يتيم", emoji: "🤲" },
+    { cost: 5, unit: "وجبة ليتيم", emoji: "🍽️", sentence: "أطعمت {count} يتيمًا" },
+    { cost: 15, unit: "يوم كفالة يتيم", emoji: "👦", sentence: "كفلت يتيمًا لمدة {count} يوم" },
+    { cost: 50, unit: "حقيبة مدرسية ليتيم", emoji: "🎒", sentence: "وفّرت {count} حقيبة مدرسية ليتيم" },
+    { cost: 150, unit: "شهر كفالة يتيم", emoji: "🤲", sentence: "كفلت يتيمًا لمدة {count} شهر" },
   ],
   water: [
-    { cost: 4.5, unit: "عبوة ماء نظيف", emoji: "💧" },
-    { cost: 15, unit: "يوم ماء لعائلة", emoji: "🚰" },
-    { cost: 45, unit: "شهر ماء لأسرة", emoji: "💦" },
-    { cost: 150, unit: "مساهمة في حفر بئر", emoji: "⛏️" },
+    { cost: 4.5, unit: "عبوة ماء نظيف", emoji: "💧", sentence: "وفّرت {count} عبوة ماء نظيف" },
+    { cost: 15, unit: "يوم ماء لعائلة", emoji: "🚰", sentence: "وفّرت مياه نظيفة لـ {count} يوم لعائلة" },
+    { cost: 45, unit: "شهر ماء لأسرة", emoji: "💦", sentence: "وفّرت مياه نظيفة لأسرة لمدة {count} شهر" },
+    { cost: 150, unit: "مساهمة في حفر بئر", emoji: "⛏️", sentence: "ساهمت في حفر {count} بئر" },
   ],
   education: [
-    { cost: 5, unit: "قلم وكراسة", emoji: "✏️" },
-    { cost: 12, unit: "مصحف كريم", emoji: "📖" },
-    { cost: 35, unit: "حقيبة مدرسية", emoji: "🎒" },
-    { cost: 120, unit: "شهر تعليم لطالب", emoji: "🎓" },
+    { cost: 5, unit: "قلم وكراسة", emoji: "✏️", sentence: "وفّرت {count} قلم وكراسة لطالب" },
+    { cost: 12, unit: "مصحف كريم", emoji: "📖", sentence: "أهديت {count} مصحف كريم" },
+    { cost: 35, unit: "حقيبة مدرسية", emoji: "🎒", sentence: "وفّرت {count} حقيبة مدرسية" },
+    { cost: 120, unit: "شهر تعليم لطالب", emoji: "🎓", sentence: "دعمت تعليم طالب لمدة {count} شهر" },
   ],
   mosques: [
-    { cost: 5, unit: "لبنة في بناء مسجد", emoji: "🧱" },
-    { cost: 20, unit: "سجادة صلاة", emoji: "🕌" },
-    { cost: 50, unit: "مصحف للمسجد", emoji: "📖" },
-    { cost: 150, unit: "مساهمة في بناء مسجد", emoji: "🏗️" },
+    { cost: 5, unit: "لبنة في بناء مسجد", emoji: "🧱", sentence: "ساهمت بـ {count} لبنة في بناء مسجد" },
+    { cost: 20, unit: "سجادة صلاة", emoji: "🕌", sentence: "وفّرت {count} سجادة صلاة" },
+    { cost: 50, unit: "مصحف للمسجد", emoji: "📖", sentence: "أهديت {count} مصحف للمسجد" },
+    { cost: 150, unit: "مساهمة في بناء مسجد", emoji: "🏗️", sentence: "ساهمت في بناء مسجد بمقدار {count} مساهمة" },
   ],
 };
+
+// picks the highest-cost tier the contribution actually reaches (not the
+// cheapest tier), so e.g. a large orphans contribution reads as a
+// sponsorship-day count rather than the smallest meal unit
+export function highestAchievedImpact(
+  causeId: CharityCauseId,
+  contribution: number
+): { unit: ImpactUnit; count: number } | null {
+  const tiers = IMPACT_UNITS[causeId];
+  for (let i = tiers.length - 1; i >= 0; i--) {
+    const count = Math.floor(contribution / tiers[i].cost);
+    if (count >= 1) return { unit: tiers[i], count };
+  }
+  return null;
+}
+
+export function formatImpactSentence(unit: ImpactUnit, count: number): string {
+  return unit.sentence.replace("{count}", count.toLocaleString("ar-SA"));
+}
+
+// per-cause, per-month breakdown of yourContribution — amounts sum to each
+// cause's CHARITY_CAUSES.yourContribution total
+export const IMPACT_MONTHLY_HISTORY: Array<{ month: string; causeId: CharityCauseId; amount: number }> = [
+  { month: "2026-05", causeId: "orphans", amount: 10.0 },
+  { month: "2026-06", causeId: "orphans", amount: 9.5 },
+  { month: "2026-06", causeId: "water", amount: 8.0 },
+  { month: "2026-07", causeId: "orphans", amount: 8.0 },
+  { month: "2026-07", causeId: "water", amount: 12.0 },
+  { month: "2026-08", causeId: "orphans", amount: 15.0 },
+  { month: "2026-08", causeId: "water", amount: 6.0 },
+];
+
+export function groupImpactHistoryByMonth() {
+  const map = new Map<string, Array<{ causeId: CharityCauseId; amount: number }>>();
+  for (const entry of IMPACT_MONTHLY_HISTORY) {
+    if (!map.has(entry.month)) map.set(entry.month, []);
+    map.get(entry.month)!.push({ causeId: entry.causeId, amount: entry.amount });
+  }
+  return Array.from(map.entries())
+    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+    .map(([month, entries]) => ({
+      month,
+      entries,
+      total: entries.reduce((s, e) => s + e.amount, 0),
+    }));
+}
+
+export function formatImpactMonthLabel(month: string): string {
+  return new Date(`${month}-01`).toLocaleDateString("ar-SA-u-ca-gregory", {
+    month: "long",
+    year: "numeric",
+  });
+}
 
 // ---- Bank connection mock state ----
 export const BANK_ACCOUNT = {

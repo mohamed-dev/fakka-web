@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, ListIcon, MosqueIcon, TargetIcon, HeartIcon, SettingsIcon } from "./icons";
+import { HomeIcon, ListIcon, MosqueIcon, TargetIcon, HeartIcon, UsersIcon, SettingsIcon } from "./icons";
 
 const NAV_ITEMS = [
   { href: "/", label: "الرئيسية", icon: HomeIcon },
   { href: "/transactions", label: "الحركات", icon: ListIcon },
   { href: "/zakat", label: "الزكاة", icon: MosqueIcon },
   { href: "/goal", label: "أهداف الادخار", icon: TargetIcon },
-  { href: "/charities", label: "الأثر الخيري", icon: HeartIcon },
+  { href: "/charities", label: "الجمعيات", icon: UsersIcon },
+  { href: "/impact", label: "أثرك", icon: HeartIcon },
   { href: "/settings", label: "الإعدادات", icon: SettingsIcon },
 ];
 

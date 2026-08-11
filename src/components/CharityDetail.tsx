@@ -2,15 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IMPACT_UNITS } from "@/lib/mock-data";
+import { IMPACT_UNITS, highestAchievedImpact, formatImpactSentence } from "@/lib/mock-data";
 import { CharityCause, formatSAR } from "@/lib/types";
 
 export default function CharityDetail({ cause }: { cause: CharityCause }) {
   const [justDirected, setJustDirected] = useState(false);
   const units = IMPACT_UNITS[cause.id];
   const hasContributed = cause.yourContribution > 0;
-  const headlineUnit = units[0];
-  const headlineCount = Math.floor(cause.yourContribution / headlineUnit.cost);
+  const headlineImpact = hasContributed ? highestAchievedImpact(cause.id, cause.yourContribution) : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -39,7 +38,7 @@ export default function CharityDetail({ cause }: { cause: CharityCause }) {
         </div>
       </div>
 
-      {hasContributed ? (
+      {hasContributed && headlineImpact ? (
         <>
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-light p-6 text-white shadow-elevated">
             <div
@@ -48,7 +47,7 @@ export default function CharityDetail({ cause }: { cause: CharityCause }) {
             />
             <div className="relative text-sm text-white/70">أثرك الفعلي حتى الآن</div>
             <div className="relative mt-1 text-lg font-extrabold text-gold-light md:text-xl">
-              ساهمت فكتك بالفعل في {headlineCount} {headlineUnit.unit} {headlineUnit.emoji}
+              {formatImpactSentence(headlineImpact.unit, headlineImpact.count)} {headlineImpact.unit.emoji}
             </div>
           </div>
 
