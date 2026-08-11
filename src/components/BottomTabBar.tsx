@@ -11,7 +11,7 @@ import { HomeIcon, ListIcon, MosqueIcon, HeartIcon } from "./icons";
 const TABS = [
   { href: "/", label: "الرئيسية", icon: HomeIcon },
   { href: "/transactions", label: "المعاملات", icon: ListIcon },
-  { href: "/charity", label: "أثرك", icon: HeartIcon },
+  { href: "/charities", label: "أثرك", icon: HeartIcon },
   { href: "/zakat", label: "الزكاة", icon: MosqueIcon },
 ];
 
@@ -25,7 +25,7 @@ export default function BottomTabBar() {
     >
       <div className="mx-auto flex max-w-lg items-stretch justify-around px-1 pt-1.5">
         {TABS.map((tab) => {
-          const isActive = pathname === tab.href;
+          const isActive = pathname === tab.href || pathname.startsWith(`${tab.href}/`);
           const Icon = tab.icon;
           return (
             <Link

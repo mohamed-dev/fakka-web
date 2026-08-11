@@ -51,6 +51,11 @@ export interface CharityCause {
   title: string;
   description: string;
   icon: string;
+  // real, already-routed fakka amount for this cause (SAR) — 0 means the
+  // user hasn't directed any round-ups here yet
+  yourContribution: number;
+  // real, community-wide accumulated total for this cause (SAR)
+  totalCommunityRaised: number;
 }
 
 export interface ImpactUnit {

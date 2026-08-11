@@ -143,30 +143,40 @@ export const DESTINATION_BALANCES: Record<"zakat" | "goal" | "charity", { balanc
 };
 
 // ---- Charity impact (charity destination) ----
+// yourContribution values sum to DESTINATION_BALANCES.charity.balance (68.5),
+// keeping the per-cause split consistent with the home jar total.
 export const CHARITY_CAUSES: CharityCause[] = [
   {
     id: "orphans",
     title: "جمعية رعاية الأيتام",
     description: "كفالة ورعاية الأيتام وتوفير حياة كريمة لهم",
     icon: "👦",
+    yourContribution: 42.5,
+    totalCommunityRaised: 128430,
   },
   {
     id: "water",
     title: "جمعية سقيا الماء",
     description: "توفير مياه شرب نظيفة للمحتاجين في المناطق الأكثر فقراً",
     icon: "💧",
+    yourContribution: 26.0,
+    totalCommunityRaised: 96210,
   },
   {
     id: "education",
     title: "جمعية تعليم",
     description: "دعم التعليم وتوفير الكتب والأدوات للطلاب المحتاجين",
     icon: "🎓",
+    yourContribution: 0,
+    totalCommunityRaised: 74850,
   },
   {
     id: "mosques",
     title: "جمعية عمارة المساجد",
     description: "بناء وترميم المساجد في المناطق النائية",
     icon: "🕌",
+    yourContribution: 0,
+    totalCommunityRaised: 61300,
   },
 ];
 

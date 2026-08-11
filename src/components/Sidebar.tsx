@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { href: "/transactions", label: "الحركات", icon: ListIcon },
   { href: "/zakat", label: "الزكاة", icon: MosqueIcon },
   { href: "/goal", label: "أهداف الادخار", icon: TargetIcon },
-  { href: "/charity", label: "الأثر الخيري", icon: HeartIcon },
+  { href: "/charities", label: "الأثر الخيري", icon: HeartIcon },
   { href: "/settings", label: "الإعدادات", icon: SettingsIcon },
 ];
 
@@ -30,7 +30,7 @@ export default function Sidebar() {
 
       <nav className="flex flex-1 flex-col gap-1">
         {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           const Icon = item.icon;
           return (
             <Link
