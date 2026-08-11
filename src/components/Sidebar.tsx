@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HomeIcon, ListIcon, MosqueIcon, TargetIcon, HeartIcon, UsersIcon, SettingsIcon } from "./icons";
@@ -19,14 +20,8 @@ export default function Sidebar() {
 
   return (
     <aside className="hidden md:flex fixed right-0 top-0 h-screen w-64 flex-col border-l border-black/5 bg-card px-4 py-6">
-      <div className="flex items-center gap-2.5 px-2 pb-8">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-gold shadow-card">
-          ف
-        </div>
-        <div>
-          <div className="text-lg font-extrabold text-ink">فكة</div>
-          <div className="text-xs text-muted">Fakka</div>
-        </div>
+      <div className="px-2 pb-8">
+        <Image src="/logo.png" alt="فكة" width={112} height={63} priority className="h-auto w-28" />
       </div>
 
       <nav className="flex flex-1 flex-col gap-1">

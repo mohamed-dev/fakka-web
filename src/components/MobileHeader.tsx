@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { BANK_ACCOUNT } from "@/lib/mock-data";
 import { BankIcon, MenuIcon } from "./icons";
 import MobileDrawer from "./MobileDrawer";
@@ -23,12 +24,7 @@ export default function MobileHeader() {
             >
               <MenuIcon />
             </button>
-            <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-sm font-bold text-gold shadow-card">
-                ف
-              </div>
-              <span className="text-base font-extrabold text-ink">فكة</span>
-            </div>
+            <Image src="/logo.png" alt="فكة" width={88} height={49} priority className="h-auto w-20" />
           </div>
 
           <div className="flex items-center gap-1.5 rounded-full bg-primary-light/10 px-3 py-1.5 text-xs font-semibold text-primary-light">
