@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Tajawal } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
-import MobileNav from "@/components/MobileNav";
+import MobileHeader from "@/components/MobileHeader";
+import BottomTabBar from "@/components/BottomTabBar";
+import PageTransition from "@/components/PageTransition";
 
 const tajawal = Tajawal({
   subsets: ["arabic"],
@@ -15,15 +17,25 @@ export const metadata: Metadata = {
   description: "وفّر فكتك تلقائيًا نحو الزكاة، أهداف الادخار، أو الصدقة",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#163527",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl" className={tajawal.variable}>
       <body className="font-tajawal antialiased">
         <Sidebar />
-        <div className="lg:mr-64">
-          <MobileNav />
-          <main className="mx-auto max-w-6xl px-4 py-6 lg:px-8 lg:py-10">{children}</main>
+        <div className="md:mr-64">
+          <MobileHeader />
+          <main className="mx-auto max-w-6xl px-4 pb-28 pt-5 md:px-8 md:py-10">
+            <PageTransition>{children}</PageTransition>
+          </main>
         </div>
+        <BottomTabBar />
       </body>
     </html>
   );

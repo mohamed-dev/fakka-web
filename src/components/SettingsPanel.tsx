@@ -15,7 +15,7 @@ function ToggleRow({
 }) {
   const [on, setOn] = useState(defaultOn);
   return (
-    <div className="flex items-center justify-between gap-4 py-3.5">
+    <div className="flex items-center justify-between gap-4 py-4">
       <div>
         <div className="text-sm font-semibold text-ink">{title}</div>
         <div className="mt-0.5 text-xs text-muted">{desc}</div>
@@ -23,10 +23,10 @@ function ToggleRow({
       <button
         onClick={() => setOn((v) => !v)}
         aria-pressed={on}
-        className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${on ? "bg-primary" : "bg-black/15"}`}
+        className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 ${on ? "bg-primary" : "bg-black/15"}`}
       >
         <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${
+          className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all duration-200 ${
             on ? "left-0.5" : "right-0.5"
           }`}
         />
@@ -43,13 +43,13 @@ export default function SettingsPanel() {
   return (
     <div className="flex flex-col gap-6">
       {/* Bank connection */}
-      <div className="rounded-xl2 bg-card p-6 shadow-card">
+      <div className="rounded-3xl bg-card p-6 shadow-card md:p-7">
         <h2 className="text-sm font-bold text-ink">الحساب البنكي المتصل</h2>
 
         {connected ? (
           <>
-            <div className="mt-4 flex items-center gap-4 rounded-xl bg-background p-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-lg font-bold text-gold">
+            <div className="mt-4 flex items-center gap-4 rounded-2xl bg-background p-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-gold shadow-card">
                 AR
               </div>
               <div className="flex-1">
@@ -62,19 +62,19 @@ export default function SettingsPanel() {
                 {BANK_ACCOUNT.status}
               </span>
             </div>
-            <div className="mt-2 text-xs text-muted">
+            <div className="mt-2.5 text-xs text-muted">
               تم الربط بتاريخ {BANK_ACCOUNT.connectedDate.split("-").reverse().join("/")}
             </div>
 
             {!confirmingDisconnect ? (
               <button
                 onClick={() => setConfirmingDisconnect(true)}
-                className="mt-4 rounded-xl border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50"
+                className="mt-4 rounded-2xl border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition-all duration-200 hover:bg-red-50 active:scale-[0.98]"
               >
                 فصل الحساب
               </button>
             ) : (
-              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl bg-red-50 p-4">
+              <div className="mt-4 flex animate-pop-in flex-wrap items-center gap-3 rounded-2xl bg-red-50 p-4">
                 <span className="text-sm text-red-700">هل أنت متأكد من فصل الحساب؟ سيتوقف تجميع الفكة.</span>
                 <div className="flex gap-2">
                   <button
@@ -82,13 +82,13 @@ export default function SettingsPanel() {
                       setConnected(false);
                       setConfirmingDisconnect(false);
                     }}
-                    className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white"
+                    className="rounded-xl bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition-transform active:scale-95"
                   >
                     تأكيد الفصل
                   </button>
                   <button
                     onClick={() => setConfirmingDisconnect(false)}
-                    className="rounded-lg border border-black/10 px-3 py-1.5 text-xs font-semibold text-ink"
+                    className="rounded-xl border border-black/10 px-3 py-1.5 text-xs font-semibold text-ink transition-transform active:scale-95"
                   >
                     إلغاء
                   </button>
@@ -97,11 +97,11 @@ export default function SettingsPanel() {
             )}
           </>
         ) : (
-          <div className="mt-4 flex flex-col items-center gap-3 rounded-xl bg-background p-6 text-center">
+          <div className="mt-4 flex flex-col items-center gap-3 rounded-2xl bg-background p-6 text-center">
             <span className="text-sm text-muted">لا يوجد حساب بنكي متصل حاليًا</span>
             <button
               onClick={() => setConnected(true)}
-              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white"
+              className="rounded-2xl bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-card transition-all duration-200 hover:shadow-soft active:scale-[0.98]"
             >
               ربط حساب بنكي
             </button>
@@ -110,7 +110,7 @@ export default function SettingsPanel() {
       </div>
 
       {/* Destination preference */}
-      <div className="rounded-xl2 bg-card p-6 shadow-card">
+      <div className="rounded-3xl bg-card p-6 shadow-card md:p-7">
         <h2 className="text-sm font-bold text-ink">الوجهة الافتراضية للفكة</h2>
         <p className="mt-1 text-xs text-muted">اختر أين تذهب فكتك المجمّعة تلقائيًا بشكل افتراضي</p>
 
@@ -121,8 +121,8 @@ export default function SettingsPanel() {
               <button
                 key={d.id}
                 onClick={() => setPreferredDestination(d.id)}
-                className={`flex items-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold transition-colors ${
-                  isActive ? "border-primary bg-primary/5 text-ink" : "border-black/5 text-muted hover:border-black/10"
+                className={`flex items-center gap-2 rounded-2xl border-2 px-4 py-3 text-sm font-semibold transition-all duration-200 active:scale-[0.97] ${
+                  isActive ? "border-primary bg-primary/5 text-ink shadow-soft" : "border-black/5 text-muted hover:border-black/10"
                 }`}
               >
                 <span>{d.icon}</span>
@@ -135,7 +135,7 @@ export default function SettingsPanel() {
       </div>
 
       {/* Privacy / consent (Saudi PDPL) */}
-      <div className="rounded-xl2 bg-card p-6 shadow-card">
+      <div className="rounded-3xl bg-card p-6 shadow-card md:p-7">
         <h2 className="text-sm font-bold text-ink">الخصوصية والموافقة</h2>
         <p className="mt-1 text-xs text-muted">
           وفقًا لنظام حماية البيانات الشخصية السعودي (PDPL)، نلتزم بمعالجة بياناتك بشفافية وبموافقتك الصريحة.
@@ -159,7 +159,7 @@ export default function SettingsPanel() {
           />
         </div>
 
-        <div className="mt-4 rounded-xl bg-background p-4 text-xs leading-relaxed text-muted">
+        <div className="mt-4 rounded-2xl bg-background p-4 text-xs leading-relaxed text-muted">
           يحق لك في أي وقت طلب الاطلاع على بياناتك أو تصحيحها أو حذفها، وذلك بما يتوافق مع نظام حماية البيانات
           الشخصية الصادر عن الهيئة السعودية لتنظيم البيانات (سدايا). بياناتك مشفّرة ولا تتم مشاركتها مع أي جهة
           خارجية دون موافقتك الصريحة.

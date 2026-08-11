@@ -4,11 +4,18 @@
 
 html {
   scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 
 body {
   background-color: #f7f3ea;
   color: #17201a;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar {

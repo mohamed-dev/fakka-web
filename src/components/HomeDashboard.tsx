@@ -8,19 +8,26 @@ import BalanceJar from "./BalanceJar";
 import StatCard from "./StatCard";
 import SubscriptionCard from "./SubscriptionCard";
 import TransactionRow from "./TransactionRow";
+import { ChevronIcon } from "./icons";
 import Link from "next/link";
+
+const QUICK_LINKS: Partial<Record<DestinationType, { href: string; label: string }>> = {
+  charity: { href: "/charity", label: "شاهد أثرك" },
+  goal: { href: "/goal", label: "تفاصيل الهدف" },
+};
 
 export default function HomeDashboard() {
   const [active, setActive] = useState<DestinationType>("zakat");
   const destination = DESTINATIONS.find((d) => d.id === active)!;
   const jar = DESTINATION_BALANCES[active];
+  const quickLink = QUICK_LINKS[active];
 
   const recent = TRANSACTIONS.slice(0, 6);
   const weekly = weeklyRoundUp();
   const monthly = monthlyRoundUp();
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 md:gap-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-ink">أهلًا بك 👋</h1>
@@ -38,13 +45,13 @@ export default function HomeDashboard() {
             icon={destination.icon}
             note={jar.note}
           />
-          {active === "charity" && (
+          {quickLink && (
             <Link
-              href="/charity"
-              className="flex items-center justify-center gap-2 rounded-xl2 bg-card px-4 py-3 text-sm font-semibold text-primary-light shadow-card transition-colors hover:bg-background"
+              href={quickLink.href}
+              className="flex items-center justify-center gap-1.5 rounded-2xl bg-card px-4 py-3.5 text-sm font-bold text-primary-light shadow-card transition-all duration-200 active:scale-[0.98] hover:shadow-soft"
             >
-              شاهد أثرك
-              <span>‹</span>
+              {quickLink.label}
+              <ChevronIcon />
             </Link>
           )}
         </div>
@@ -58,7 +65,7 @@ export default function HomeDashboard() {
         </div>
       </div>
 
-      <div className="rounded-xl2 bg-card p-5 shadow-card">
+      <div className="rounded-2xl bg-card p-5 shadow-card md:p-6">
         <div className="mb-2 flex items-center justify-between">
           <h2 className="text-sm font-bold text-ink">آخر الحركات</h2>
           <Link href="/transactions" className="text-xs font-semibold text-primary-light hover:underline">

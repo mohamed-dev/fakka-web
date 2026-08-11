@@ -5,10 +5,10 @@ export default function SubscriptionCard() {
   const monthlyTotal = SUBSCRIPTIONS.reduce((sum, s) => sum + s.amount, 0);
 
   return (
-    <div className="rounded-xl2 bg-card p-5 shadow-card">
+    <div className="rounded-2xl bg-card p-5 shadow-card transition-shadow duration-200 hover:shadow-soft">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold/10 text-base">🔁</span>
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10 text-base">🔁</span>
           <div>
             <div className="text-sm font-bold text-ink">اشتراكات متكررة مكتشفة</div>
             <div className="text-xs text-muted">{SUBSCRIPTIONS.length} اشتراكات نشطة</div>
@@ -22,7 +22,7 @@ export default function SubscriptionCard() {
 
       <div className="mt-4 divide-y divide-black/5">
         {SUBSCRIPTIONS.map((s) => (
-          <div key={s.id} className="flex items-center justify-between py-2.5">
+          <div key={s.id} className="flex items-center justify-between rounded-xl px-1.5 py-3 transition-colors hover:bg-background">
             <div>
               <div className="text-sm font-semibold text-ink">{s.merchant}</div>
               <div className="text-xs text-muted">
