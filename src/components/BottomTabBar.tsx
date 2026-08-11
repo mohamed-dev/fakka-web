@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, ListIcon, MosqueIcon, HeartIcon, SettingsIcon } from "./icons";
+import { HomeIcon, ListIcon, MosqueIcon, HeartIcon } from "./icons";
 
+// DOM order matters for RTL flex layout: the first item renders at the
+// screen's right edge, the last at the left edge. This order yields the
+// left-to-right screen sequence: الزكاة، أثرك، المعاملات، الرئيسية —
+// placing "أثرك" in the visual middle of the row.
 const TABS = [
   { href: "/", label: "الرئيسية", icon: HomeIcon },
   { href: "/transactions", label: "المعاملات", icon: ListIcon },
+  { href: "/charity", label: "أثرك", icon: HeartIcon },
   { href: "/zakat", label: "الزكاة", icon: MosqueIcon },
-  { href: "/charity", label: "الأثر", icon: HeartIcon },
-  { href: "/settings", label: "الإعدادات", icon: SettingsIcon },
 ];
 
 export default function BottomTabBar() {
