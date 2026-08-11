@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CHARITY_CAUSES } from "@/lib/mock-data";
 import { formatSAR } from "@/lib/types";
+import { InfoIcon } from "@/components/icons";
 
 export default function CharitiesPage() {
   return (
@@ -23,7 +24,15 @@ export default function CharitiesPage() {
                   {cause.icon}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-bold text-ink">{cause.title}</div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-bold text-ink">{cause.title}</span>
+                    <span
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background text-muted"
+                      aria-label="عرض تفاصيل الجهة"
+                    >
+                      <InfoIcon />
+                    </span>
+                  </div>
                   <div className="mt-0.5 truncate text-xs text-muted">{cause.description}</div>
                 </div>
               </Link>
