@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CHARITY_CAUSES, DEFAULT_CAUSE_ID } from "@/lib/mock-data";
+import { CHARITY_CAUSES, DEFAULT_CAUSE_ID, IMPACT_UNITS } from "@/lib/mock-data";
 import { CharityCauseId, formatSAR } from "@/lib/types";
+import AnimatedBar from "./AnimatedBar";
 import CauseImpactPanel from "./CauseImpactPanel";
 
 export default function GoalPicker() {
@@ -11,10 +12,12 @@ export default function GoalPicker() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3.5">
         {CHARITY_CAUSES.map((cause) => {
           const isActive = cause.id === selectedId;
-          const hasContributed = cause.yourContribution > 0;
+          const tiers = IMPACT_UNITS[cause.id];
+          const topTierCost = tiers[tiers.length - 1].cost;
+          const pct = Math.min(100, Math.round((cause.yourContribution / topTierCost) * 100));
           return (
             <button
               key={cause.id}
@@ -26,10 +29,11 @@ export default function GoalPicker() {
               }`}
             >
               <span className="text-3xl">{cause.icon}</span>
-              <span className="text-sm font-bold text-ink">{cause.title}</span>
-              <span className="text-xs text-muted">
-                {hasContributed ? `${formatSAR(cause.yourContribution, { decimals: 0 })} ر.س` : "لم تبدأ بعد"}
-              </span>
+              <span className="text-sm font-bold leading-snug text-ink">{cause.title}</span>
+              <div className="w-full">
+                <AnimatedBar pct={pct} colorClass="bg-gold" heightClass="h-1.5" />
+                <span className="mt-1.5 block text-xs text-muted">{pct}٪ مكتمل</span>
+              </div>
             </button>
           );
         })}

@@ -35,7 +35,7 @@ export interface Subscription {
   occurrences: number;
 }
 
-export type CharityCauseId = "orphans" | "water" | "education" | "mosques";
+export type CharityCauseId = "hajj_umrah" | "water" | "feeding" | "sadaqah_jariyah" | "medical";
 
 export interface CharityCause {
   id: CharityCauseId;

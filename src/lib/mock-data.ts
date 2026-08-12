@@ -132,81 +132,95 @@ export const ZAKAT_STATE = {
 export const DESTINATION_BALANCES: Record<"zakat" | "goal" | "charity", { balance: number; target: number; note: string }> = {
   zakat: { balance: 342.75, target: 617.01, note: "نحو استحقاق الزكاة القادم" },
   goal: { balance: 1240.0, target: 4500.0, note: "نحو هدف الادخار" },
-  charity: { balance: 68.5, target: 1000.0, note: "صدقة جارية هذا الشهر" },
+  charity: { balance: 741.0, target: 2000.0, note: "صدقة جارية هذا الشهر" },
 };
 
 // ---- Charity impact (charity destination) ----
-// yourContribution values sum to DESTINATION_BALANCES.charity.balance (68.5),
+// yourContribution values sum to DESTINATION_BALANCES.charity.balance (741),
 // keeping the per-cause split consistent with the home jar total.
 export const CHARITY_CAUSES: CharityCause[] = [
   {
-    id: "orphans",
-    title: "جمعية رعاية الأيتام",
-    description: "كفالة ورعاية الأيتام وتوفير حياة كريمة لهم",
-    icon: "👦",
-    yourContribution: 42.5,
-    totalCommunityRaised: 128430,
+    id: "hajj_umrah",
+    title: "دفع تكلفة حج أو عمرة لمحتاج",
+    description: "المساهمة في تغطية تكاليف رحلة حج أو عمرة لمن لا يستطيع تحمّل تكلفتها",
+    icon: "🕋",
+    yourContribution: 650,
+    totalCommunityRaised: 142300,
   },
   {
     id: "water",
-    title: "جمعية سقيا الماء",
+    title: "١٠٠ زجاجة سقيا ماء",
     description: "توفير مياه شرب نظيفة للمحتاجين في المناطق الأكثر فقراً",
     icon: "💧",
     yourContribution: 26.0,
     totalCommunityRaised: 96210,
   },
   {
-    id: "education",
-    title: "جمعية تعليم",
-    description: "دعم التعليم وتوفير الكتب والأدوات للطلاب المحتاجين",
-    icon: "🎓",
-    yourContribution: 0,
-    totalCommunityRaised: 74850,
+    id: "feeding",
+    title: "٣٠ إطعام مسكين",
+    description: "توفير وجبات طعام للمحتاجين والمساكين في الأحياء الأكثر احتياجًا",
+    icon: "🍚",
+    yourContribution: 65,
+    totalCommunityRaised: 88420,
   },
   {
-    id: "mosques",
-    title: "جمعية عمارة المساجد",
-    description: "بناء وترميم المساجد في المناطق النائية",
-    icon: "🕌",
+    id: "sadaqah_jariyah",
+    title: "١٥ صدقة جارية",
+    description: "دعم مشاريع خيرية دائمة الأثر مثل زراعة الأشجار ونشر المصاحف والوقف الخيري",
+    icon: "🌳",
     yourContribution: 0,
-    totalCommunityRaised: 61300,
+    totalCommunityRaised: 71900,
+  },
+  {
+    id: "medical",
+    title: "٣٠ حالة علاج لغير القادرين",
+    description: "المساهمة في تغطية تكاليف العلاج الطبي والعمليات الجراحية للمرضى غير القادرين",
+    icon: "⚕️",
+    yourContribution: 0,
+    totalCommunityRaised: 105600,
   },
 ];
 
 // shared default cause selection for /goal's cause picker and the home
 // page's هدف ادخاري tab, so both agree on which cause to show by default
-export const DEFAULT_CAUSE_ID: CharityCauseId = "orphans";
+export const DEFAULT_CAUSE_ID: CharityCauseId = "hajj_umrah";
 
 export const IMPACT_UNITS: Record<CharityCauseId, ImpactUnit[]> = {
-  orphans: [
-    { cost: 5, unit: "وجبة ليتيم", emoji: "🍽️", sentence: "أطعمت {count} يتيمًا" },
-    { cost: 15, unit: "يوم كفالة يتيم", emoji: "👦", sentence: "كفلت يتيمًا لمدة {count} يوم" },
-    { cost: 50, unit: "حقيبة مدرسية ليتيم", emoji: "🎒", sentence: "وفّرت {count} حقيبة مدرسية ليتيم" },
-    { cost: 150, unit: "شهر كفالة يتيم", emoji: "🤲", sentence: "كفلت يتيمًا لمدة {count} شهر" },
+  hajj_umrah: [
+    { cost: 100, unit: "مساهمة في تكاليف التنقل", emoji: "🚌", sentence: "ساهمت بـ {count} في تكاليف تنقل معتمر" },
+    { cost: 500, unit: "مساهمة في تذكرة الطيران", emoji: "✈️", sentence: "وفّرت {count} مساهمة في تذكرة طيران معتمر" },
+    { cost: 1500, unit: "نصف تكلفة رحلة عمرة", emoji: "🕋", sentence: "غطّيت {count} من نصف تكلفة رحلة عمرة" },
+    { cost: 3500, unit: "تكلفة رحلة عمرة كاملة", emoji: "🕌", sentence: "غطّيت {count} تكلفة رحلة عمرة كاملة لمحتاج" },
   ],
   water: [
-    { cost: 4.5, unit: "عبوة ماء نظيف", emoji: "💧", sentence: "وفّرت {count} عبوة ماء نظيف" },
+    { cost: 4.5, unit: "زجاجة سقيا ماء", emoji: "💧", sentence: "وفّرت {count} زجاجة سقيا ماء" },
     { cost: 15, unit: "يوم ماء لعائلة", emoji: "🚰", sentence: "وفّرت مياه نظيفة لـ {count} يوم لعائلة" },
     { cost: 45, unit: "شهر ماء لأسرة", emoji: "💦", sentence: "وفّرت مياه نظيفة لأسرة لمدة {count} شهر" },
     { cost: 150, unit: "مساهمة في حفر بئر", emoji: "⛏️", sentence: "ساهمت في حفر {count} بئر" },
   ],
-  education: [
-    { cost: 5, unit: "قلم وكراسة", emoji: "✏️", sentence: "وفّرت {count} قلم وكراسة لطالب" },
-    { cost: 12, unit: "مصحف كريم", emoji: "📖", sentence: "أهديت {count} مصحف كريم" },
-    { cost: 35, unit: "حقيبة مدرسية", emoji: "🎒", sentence: "وفّرت {count} حقيبة مدرسية" },
-    { cost: 120, unit: "شهر تعليم لطالب", emoji: "🎓", sentence: "دعمت تعليم طالب لمدة {count} شهر" },
+  feeding: [
+    { cost: 15, unit: "وجبة إطعام لمسكين", emoji: "🍚", sentence: "أطعمت {count} مسكينًا" },
+    { cost: 50, unit: "سلة غذائية", emoji: "🧺", sentence: "وفّرت {count} سلة غذائية لأسرة محتاجة" },
+    { cost: 100, unit: "إطعام مسكين لأسبوع", emoji: "📅", sentence: "أطعمت مسكينًا لمدة {count} أسبوع" },
+    { cost: 300, unit: "إطعام مسكين لشهر كامل", emoji: "🗓️", sentence: "أطعمت مسكينًا لمدة {count} شهر" },
   ],
-  mosques: [
-    { cost: 5, unit: "لبنة في بناء مسجد", emoji: "🧱", sentence: "ساهمت بـ {count} لبنة في بناء مسجد" },
-    { cost: 20, unit: "سجادة صلاة", emoji: "🕌", sentence: "وفّرت {count} سجادة صلاة" },
-    { cost: 50, unit: "مصحف للمسجد", emoji: "📖", sentence: "أهديت {count} مصحف للمسجد" },
-    { cost: 150, unit: "مساهمة في بناء مسجد", emoji: "🏗️", sentence: "ساهمت في بناء مسجد بمقدار {count} مساهمة" },
+  sadaqah_jariyah: [
+    { cost: 10, unit: "غرسة شجرة صدقة جارية", emoji: "🌱", sentence: "غرست {count} شجرة صدقة جارية" },
+    { cost: 30, unit: "نسخة مصحف صدقة جارية", emoji: "📖", sentence: "أهديت {count} مصحف صدقة جارية" },
+    { cost: 100, unit: "سهم في وقف خيري", emoji: "🕌", sentence: "ساهمت بـ {count} سهم في وقف خيري" },
+    { cost: 500, unit: "مشروع صدقة جارية كامل", emoji: "🌳", sentence: "أوقفت {count} مشروع صدقة جارية دائم الأثر" },
+  ],
+  medical: [
+    { cost: 30, unit: "جلسة علاج طبيعي", emoji: "💊", sentence: "وفّرت {count} جلسة علاج لمريض" },
+    { cost: 150, unit: "كشفية طبيب مختص", emoji: "🩺", sentence: "غطّيت {count} كشفية طبيب لمريض" },
+    { cost: 600, unit: "تكلفة أدوية شهرية لمريض", emoji: "💉", sentence: "وفّرت {count} علاج أدوية شهري لمريض" },
+    { cost: 2500, unit: "مساهمة في تكلفة عملية جراحية", emoji: "⚕️", sentence: "ساهمت بـ {count} في تكلفة عملية جراحية" },
   ],
 };
 
 // picks the highest-cost tier the contribution actually reaches (not the
-// cheapest tier), so e.g. a large orphans contribution reads as a
-// sponsorship-day count rather than the smallest meal unit
+// cheapest tier), so e.g. a large hajj_umrah contribution reads as a
+// flight-ticket contribution rather than the smallest transport unit
 export function highestAchievedImpact(
   causeId: CharityCauseId,
   contribution: number
@@ -238,12 +252,12 @@ export function nextUnachievedImpact(
 // per-cause, per-month breakdown of yourContribution — amounts sum to each
 // cause's CHARITY_CAUSES.yourContribution total
 export const IMPACT_MONTHLY_HISTORY: Array<{ month: string; causeId: CharityCauseId; amount: number }> = [
-  { month: "2026-05", causeId: "orphans", amount: 10.0 },
-  { month: "2026-06", causeId: "orphans", amount: 9.5 },
+  { month: "2026-05", causeId: "hajj_umrah", amount: 150.0 },
+  { month: "2026-06", causeId: "hajj_umrah", amount: 150.0 },
   { month: "2026-06", causeId: "water", amount: 8.0 },
-  { month: "2026-07", causeId: "orphans", amount: 8.0 },
+  { month: "2026-07", causeId: "hajj_umrah", amount: 200.0 },
   { month: "2026-07", causeId: "water", amount: 12.0 },
-  { month: "2026-08", causeId: "orphans", amount: 15.0 },
+  { month: "2026-08", causeId: "hajj_umrah", amount: 150.0 },
   { month: "2026-08", causeId: "water", amount: 6.0 },
 ];
 
