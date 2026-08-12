@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { IMPACT_UNITS, highestAchievedImpact, formatImpactSentence } from "@/lib/mock-data";
+import { highestAchievedImpact, formatImpactSentence } from "@/lib/mock-data";
 import { CharityCause, formatSAR } from "@/lib/types";
+import ImpactTierGrid from "./ImpactTierGrid";
 
 export default function CharityDetail({ cause }: { cause: CharityCause }) {
   const [justDirected, setJustDirected] = useState(false);
-  const units = IMPACT_UNITS[cause.id];
   const hasContributed = cause.yourContribution > 0;
   const headlineImpact = hasContributed ? highestAchievedImpact(cause.id, cause.yourContribution) : null;
 
@@ -53,34 +53,8 @@ export default function CharityDetail({ cause }: { cause: CharityCause }) {
 
           <div className="rounded-3xl bg-card p-6 shadow-card md:p-7">
             <h2 className="text-sm font-bold text-ink">تفصيل الأثر المتحقق</h2>
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {units.map((unit) => {
-                const count = Math.floor(cause.yourContribution / unit.cost);
-                const achieved = count >= 1;
-                return (
-                  <div
-                    key={unit.unit}
-                    className={`flex flex-col items-center gap-1.5 rounded-2xl p-4 text-center transition-transform duration-200 ${
-                      achieved ? "bg-gold/10 hover:-translate-y-0.5" : "bg-background opacity-60"
-                    }`}
-                  >
-                    <span className="text-2xl">{unit.emoji}</span>
-                    {achieved ? (
-                      <>
-                        <span className="text-lg font-extrabold text-gold">{count}</span>
-                        <span className="text-xs font-medium text-ink">{unit.unit}</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-xs font-medium text-muted">{unit.unit}</span>
-                        <span className="text-xs font-semibold text-muted">
-                          يحتاج {formatSAR(unit.cost - cause.yourContribution, { decimals: 2 })} ر.س
-                        </span>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
+            <div className="mt-5">
+              <ImpactTierGrid causeId={cause.id} contribution={cause.yourContribution} />
             </div>
           </div>
         </>

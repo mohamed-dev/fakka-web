@@ -3,16 +3,25 @@
 import { useState } from "react";
 import Link from "next/link";
 import { formatSAR } from "@/lib/types";
-import { DESTINATION_BALANCES, TRANSACTIONS, weeklyRoundUp, monthlyRoundUp } from "@/lib/mock-data";
+import {
+  DESTINATION_BALANCES,
+  TRANSACTIONS,
+  weeklyRoundUp,
+  monthlyRoundUp,
+  CHARITY_CAUSES,
+  DEFAULT_CAUSE_ID,
+} from "@/lib/mock-data";
 import DestinationTabs, { HOME_TABS, HomeTabId } from "./DestinationTabs";
 import BalanceJar from "./BalanceJar";
 import StatCard from "./StatCard";
 import SubscriptionCard from "./SubscriptionCard";
 import TransactionRow from "./TransactionRow";
+import CauseImpactPanel from "./CauseImpactPanel";
 import { ChevronIcon } from "./icons";
 
 const TOTAL_BALANCE = DESTINATION_BALANCES.zakat.balance + DESTINATION_BALANCES.goal.balance;
 const TOTAL_TARGET = DESTINATION_BALANCES.zakat.target + DESTINATION_BALANCES.goal.target;
+const DEFAULT_CAUSE = CHARITY_CAUSES.find((c) => c.id === DEFAULT_CAUSE_ID)!;
 
 export default function HomeDashboard() {
   const [active, setActive] = useState<HomeTabId>("total");
@@ -60,26 +69,35 @@ export default function HomeDashboard() {
               caption="إجمالي فكتك من كل الوجهات"
               note="مجموع ما جمعته للزكاة وهدف الادخار"
             />
-          ) : (
+          ) : active === "goal" ? (
             <>
-              <BalanceJar
-                balance={DESTINATION_BALANCES[active].balance}
-                target={DESTINATION_BALANCES[active].target}
-                label={activeTab.label}
-                icon={activeTab.icon}
-                caption={active === "goal" ? "رصيدك في هدف الادخار" : undefined}
-                note={DESTINATION_BALANCES[active].note}
-              />
-              {active === "goal" && (
-                <Link
-                  href="/goal"
-                  className="flex items-center justify-center gap-1.5 rounded-2xl bg-card px-4 py-3.5 text-sm font-bold text-primary-light shadow-card transition-all duration-200 active:scale-[0.98] hover:shadow-soft"
-                >
-                  تفاصيل الهدف
-                  <ChevronIcon />
-                </Link>
-              )}
+              <div className="flex flex-col rounded-3xl bg-card p-6 shadow-soft">
+                <div className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-muted">
+                  <span>{DEFAULT_CAUSE.icon}</span> أثرك في {DEFAULT_CAUSE.title}
+                </div>
+                <div className="mt-1 text-2xl font-extrabold tracking-tight text-primary">
+                  {formatSAR(DEFAULT_CAUSE.yourContribution, { decimals: 2 })} ر.س
+                </div>
+                <div className="mt-4">
+                  <CauseImpactPanel cause={DEFAULT_CAUSE} />
+                </div>
+              </div>
+              <Link
+                href="/goal"
+                className="flex items-center justify-center gap-1.5 rounded-2xl bg-card px-4 py-3.5 text-sm font-bold text-primary-light shadow-card transition-all duration-200 active:scale-[0.98] hover:shadow-soft"
+              >
+                استكشف كل الجهات
+                <ChevronIcon />
+              </Link>
             </>
+          ) : (
+            <BalanceJar
+              balance={DESTINATION_BALANCES.zakat.balance}
+              target={DESTINATION_BALANCES.zakat.target}
+              label={activeTab.label}
+              icon={activeTab.icon}
+              note={DESTINATION_BALANCES.zakat.note}
+            />
           )}
         </div>
 

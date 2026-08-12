@@ -1,4 +1,4 @@
-import { Transaction, Subscription, SavingsGoal, CharityCause, CharityCauseId, ImpactUnit, calcRoundUp } from "./types";
+import { Transaction, Subscription, CharityCause, CharityCauseId, ImpactUnit, calcRoundUp } from "./types";
 
 // raw transaction seed: merchant, category, date, amount
 const RAW: Array<[string, Transaction["category"], string, number, string, string]> = [
@@ -74,65 +74,6 @@ export const SUBSCRIPTIONS: Subscription[] = [
   },
 ];
 
-export const SAVINGS_GOALS: SavingsGoal[] = [
-  {
-    id: "umrah",
-    title: "عمرة",
-    icon: "🕋",
-    targetAmount: 3500,
-    currentAmount: 890,
-    color: "#163527",
-    milestones: [
-      { pct: 25, phrase: "بدأت رحلتك للعمرة، أول ربع خلص!" },
-      { pct: 50, phrase: "نص المبلغ جاهز، العمرة قربت أكثر" },
-      { pct: 75, phrase: "باقي شوي وتحجز رحلتك" },
-      { pct: 100, phrase: "المبلغ كامل، جهّز حقيبتك للعمرة 🕋" },
-    ],
-  },
-  {
-    id: "phone",
-    title: "جوال جديد",
-    icon: "📱",
-    targetAmount: 4500,
-    currentAmount: 1240,
-    color: "#C6963C",
-    milestones: [
-      { pct: 25, phrase: "ربع مبلغ الجوال تجمّع" },
-      { pct: 50, phrase: "نص المبلغ خلص، اقتربت من جوالك الجديد" },
-      { pct: 75, phrase: "قربت توصل، جوالك على الأبواب" },
-      { pct: 100, phrase: "جهّزت المبلغ كامل، روح اقتنِ جوالك 📱" },
-    ],
-  },
-  {
-    id: "aqiqah",
-    title: "عقيقة",
-    icon: "🐑",
-    targetAmount: 1800,
-    currentAmount: 620,
-    color: "#25503B",
-    milestones: [
-      { pct: 25, phrase: "أول خطوة بمشوار العقيقة تمّت" },
-      { pct: 50, phrase: "نص المبلغ تجمّع، استمر بنفس الوتيرة" },
-      { pct: 75, phrase: "قربت تكمّل مبلغ العقيقة" },
-      { pct: 100, phrase: "المبلغ كامل، عقيقتك جاهزة تتحقق 🐑" },
-    ],
-  },
-  {
-    id: "emergency",
-    title: "صندوق طوارئ",
-    icon: "🛟",
-    targetAmount: 10000,
-    currentAmount: 2350,
-    color: "#6C7568",
-    milestones: [
-      { pct: 25, phrase: "بدأت تبني أمانك المالي" },
-      { pct: 50, phrase: "نص صندوق الطوارئ جاهز، طمأنينة أكبر" },
-      { pct: 75, phrase: "صندوقك يقترب من الاكتمال" },
-      { pct: 100, phrase: "صندوق طوارئك مكتمل، راحة بال حقيقية 🛟" },
-    ],
-  },
-];
-
 export function totalRoundUpFor(txns: Transaction[]): number {
   return txns.reduce((sum, t) => sum + calcRoundUp(t.amount), 0);
 }
@@ -190,7 +131,7 @@ export const ZAKAT_STATE = {
 // ---- Per-destination jar balances (home page) ----
 export const DESTINATION_BALANCES: Record<"zakat" | "goal" | "charity", { balance: number; target: number; note: string }> = {
   zakat: { balance: 342.75, target: 617.01, note: "نحو استحقاق الزكاة القادم" },
-  goal: { balance: 1240.0, target: 4500.0, note: "نحو هدف: جوال جديد" },
+  goal: { balance: 1240.0, target: 4500.0, note: "نحو هدف الادخار" },
   charity: { balance: 68.5, target: 1000.0, note: "صدقة جارية هذا الشهر" },
 };
 
@@ -231,6 +172,10 @@ export const CHARITY_CAUSES: CharityCause[] = [
     totalCommunityRaised: 61300,
   },
 ];
+
+// shared default cause selection for /goal's cause picker and the home
+// page's هدف ادخاري tab, so both agree on which cause to show by default
+export const DEFAULT_CAUSE_ID: CharityCauseId = "orphans";
 
 export const IMPACT_UNITS: Record<CharityCauseId, ImpactUnit[]> = {
   orphans: [
@@ -276,6 +221,18 @@ export function highestAchievedImpact(
 
 export function formatImpactSentence(unit: ImpactUnit, count: number): string {
   return unit.sentence.replace("{count}", count.toLocaleString("ar-SA"));
+}
+
+// cheapest tier not yet reached (ascending cost order), plus how much more
+// is needed to unlock it — null once every tier is achieved
+export function nextUnachievedImpact(
+  causeId: CharityCauseId,
+  contribution: number
+): { unit: ImpactUnit; amountNeeded: number } | null {
+  const tiers = IMPACT_UNITS[causeId];
+  const next = tiers.find((t) => Math.floor(contribution / t.cost) < 1);
+  if (!next) return null;
+  return { unit: next, amountNeeded: Math.max(0, next.cost - contribution) };
 }
 
 // per-cause, per-month breakdown of yourContribution — amounts sum to each
