@@ -1,4 +1,4 @@
-export type HomeTabId = "total" | "transactions" | "goal" | "zakat";
+export type HomeTabId = "total" | "transactions" | "zakat";
 
 interface HomeTab {
   id: HomeTabId;
@@ -9,11 +9,12 @@ interface HomeTab {
 // DOM order matters for RTL flex layout: the first item renders at the
 // screen's right edge, the last at the left edge (same pattern as
 // BottomTabBar.tsx). This order yields the left-to-right screen sequence:
-// الزكاة، هدف ادخاري، اخر الحركات، الفكة.
+// الزكاة، اخر الحركات، الفكة. "هدف ادخاري" was removed from this switcher —
+// it now has its own dedicated bottom tab and full /goal page, so it no
+// longer needs a second, inconsistent entry point here.
 export const HOME_TABS: HomeTab[] = [
   { id: "total", label: "الفكة", icon: "🪙" },
   { id: "transactions", label: "اخر الحركات", icon: "🧾" },
-  { id: "goal", label: "هدف ادخاري", icon: "🎯" },
   { id: "zakat", label: "الزكاة", icon: "🕌" },
 ];
 
