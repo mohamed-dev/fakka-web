@@ -75,10 +75,62 @@ export const SUBSCRIPTIONS: Subscription[] = [
 ];
 
 export const SAVINGS_GOALS: SavingsGoal[] = [
-  { id: "umrah", title: "عمرة", icon: "🕋", targetAmount: 3500, currentAmount: 890, color: "#163527" },
-  { id: "phone", title: "جوال جديد", icon: "📱", targetAmount: 4500, currentAmount: 1240, color: "#C6963C" },
-  { id: "aqiqah", title: "عقيقة", icon: "🐑", targetAmount: 1800, currentAmount: 620, color: "#25503B" },
-  { id: "emergency", title: "صندوق طوارئ", icon: "🛟", targetAmount: 10000, currentAmount: 2350, color: "#6C7568" },
+  {
+    id: "umrah",
+    title: "عمرة",
+    icon: "🕋",
+    targetAmount: 3500,
+    currentAmount: 890,
+    color: "#163527",
+    milestones: [
+      { pct: 25, phrase: "بدأت رحلتك للعمرة، أول ربع خلص!" },
+      { pct: 50, phrase: "نص المبلغ جاهز، العمرة قربت أكثر" },
+      { pct: 75, phrase: "باقي شوي وتحجز رحلتك" },
+      { pct: 100, phrase: "المبلغ كامل، جهّز حقيبتك للعمرة 🕋" },
+    ],
+  },
+  {
+    id: "phone",
+    title: "جوال جديد",
+    icon: "📱",
+    targetAmount: 4500,
+    currentAmount: 1240,
+    color: "#C6963C",
+    milestones: [
+      { pct: 25, phrase: "ربع مبلغ الجوال تجمّع" },
+      { pct: 50, phrase: "نص المبلغ خلص، اقتربت من جوالك الجديد" },
+      { pct: 75, phrase: "قربت توصل، جوالك على الأبواب" },
+      { pct: 100, phrase: "جهّزت المبلغ كامل، روح اقتنِ جوالك 📱" },
+    ],
+  },
+  {
+    id: "aqiqah",
+    title: "عقيقة",
+    icon: "🐑",
+    targetAmount: 1800,
+    currentAmount: 620,
+    color: "#25503B",
+    milestones: [
+      { pct: 25, phrase: "أول خطوة بمشوار العقيقة تمّت" },
+      { pct: 50, phrase: "نص المبلغ تجمّع، استمر بنفس الوتيرة" },
+      { pct: 75, phrase: "قربت تكمّل مبلغ العقيقة" },
+      { pct: 100, phrase: "المبلغ كامل، عقيقتك جاهزة تتحقق 🐑" },
+    ],
+  },
+  {
+    id: "emergency",
+    title: "صندوق طوارئ",
+    icon: "🛟",
+    targetAmount: 10000,
+    currentAmount: 2350,
+    color: "#6C7568",
+    milestones: [
+      { pct: 25, phrase: "بدأت تبني أمانك المالي" },
+      { pct: 50, phrase: "نص صندوق الطوارئ جاهز، طمأنينة أكبر" },
+      { pct: 75, phrase: "صندوقك يقترب من الاكتمال" },
+      { pct: 100, phrase: "صندوق طوارئك مكتمل، راحة بال حقيقية 🛟" },
+    ],
+  },
 ];
 
 export function totalRoundUpFor(txns: Transaction[]): number {

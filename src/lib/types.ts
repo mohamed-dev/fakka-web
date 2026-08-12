@@ -35,6 +35,11 @@ export interface Subscription {
   occurrences: number;
 }
 
+export interface GoalMilestone {
+  pct: 25 | 50 | 75 | 100;
+  phrase: string;
+}
+
 export interface SavingsGoal {
   id: string;
   title: string;
@@ -42,6 +47,7 @@ export interface SavingsGoal {
   targetAmount: number;
   currentAmount: number;
   color: string;
+  milestones: GoalMilestone[];
 }
 
 export type CharityCauseId = "orphans" | "water" | "education" | "mosques";
